@@ -1,14 +1,12 @@
 import './App.css'
-import Footer from './component/footer/footer'
-import Navbar from './component/navbar/navbar'
+import AppRoutes from './route/AppRoutes'
+import ScrollToTop from './layout/ScrollToTop'
 
 function App() {
-
-
   return (
     <>
-<Navbar></Navbar>
-<Footer></Footer>
+      <ScrollToTop />
+      <AppRoutes />
     </>
   )
 }

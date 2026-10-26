@@ -1,10 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="school">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sdpca</title>
+    <meta name="description" content="Official website of Shyampur Adarsha Vidyalaya — school introduction, notice board and online admission." />
+    <meta name="theme-color" content="#0e2a47" />
+    <title>Shyampur Adarsha Vidyalaya</title>
+    <script>
+      // Applies the saved or system theme before first paint so dark mode never flashes white.
+      (function () {
+        try {
+          var saved = localStorage.getItem('sms.theme');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) {
+            document.documentElement.setAttribute('data-theme', 'schooldark');
+            document.documentElement.style.colorScheme = 'dark';
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#0a1626');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
