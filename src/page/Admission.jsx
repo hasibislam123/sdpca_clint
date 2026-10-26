@@ -3,6 +3,7 @@ import Button from '../component/ui/Button'
 import SectionHeading from '../component/ui/SectionHeading'
 import InfoCard from '../component/ui/InfoCard'
 import useLanguage from '../hook/useLanguage'
+import { applyPath } from '../config/admission'
 
 const steps = [
   { icon: 'book', titleKey: 'admission.step1Title', textKey: 'admission.step1Text' },
@@ -20,8 +21,18 @@ export default function Admission() {
         title={t('admission.title')}
         description={t('admission.description', { year: tNumber(t('school.academicYear')) })}
         breadcrumb={[{ label: t('nav.admission') }]}
-        sections={[{ title: t('admission.formTitle'), eyebrow: t('admission.formEyebrow'), columns: 1, label: t('admission.formLabel') }]}
       />
+
+      <section className="border-t border-base-300 bg-base-200 py-12 sm:py-14">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-5 px-4 sm:px-6">
+          <SectionHeading
+            eyebrow={t('admission.formEyebrow')}
+            title={t('admission.formTitle')}
+            description={t('admission.loginHint')}
+          />
+          <Button to={applyPath}>{t('admission.startApplication')}</Button>
+        </div>
+      </section>
 
       <section className="border-t border-base-300 bg-base-100 py-14 sm:py-16">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 sm:px-6">

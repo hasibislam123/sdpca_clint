@@ -3,6 +3,7 @@ import ImagePlaceholder from '../component/ui/ImagePlaceholder'
 import SectionPlaceholder from '../component/ui/SectionPlaceholder'
 import { Icon } from '../component/ui/Icon'
 import useLanguage from '../hook/useLanguage'
+import { applyPath } from '../config/admission'
 
 const pendingSections = [
   { titleKey: 'home.statsTitle', eyebrowKey: 'home.statsEyebrow' },
@@ -30,7 +31,7 @@ function Hero() {
           </h1>
           <p className="max-w-xl text-sm leading-relaxed text-primary-content/75 sm:text-base">{t('school.blurb')}</p>
           <div className="flex flex-wrap gap-3 pt-1">
-            <Button to="/admission" variant="secondary" size="lg">
+            <Button to={applyPath} variant="secondary" size="lg">
               {t('home.ctaAdmission')}
             </Button>
             <Button to="/about" variant="light" size="lg">
@@ -67,7 +68,7 @@ function AdmissionCallToAction() {
           <h2 className="text-xl leading-snug sm:text-2xl">{t('home.ctaTitle')}</h2>
           <p className="max-w-xl text-sm leading-relaxed text-secondary-content/85">{t('home.ctaText')}</p>
         </div>
-        <Button to="/admission" variant="light" size="lg" className="shrink-0">
+        <Button to={applyPath} variant="light" size="lg" className="shrink-0">
           {t('home.ctaButton')}
         </Button>
       </div>

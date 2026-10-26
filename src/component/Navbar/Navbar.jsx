@@ -5,8 +5,10 @@ import Button from '../ui/Button'
 import { Icon } from '../ui/Icon'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import ThemeSwitcher from '../ui/ThemeSwitcher'
+import AuthMenu from './AuthMenu'
 import useLanguage from '../../hook/useLanguage'
 import { contact, navLinks, telHref } from '../../config/site'
+import { applyPath } from '../../config/admission'
 
 const linkBase = 'rounded-lg px-3 py-2 text-sm font-medium transition duration-200'
 
@@ -71,9 +73,10 @@ const Navbar = () => {
             <ThemeSwitcher />
             <LanguageSwitcher />
           </div>
-          <Button to="/admission" size="sm" className="ms-2">
+          <Button to={applyPath} size="sm" className="ms-2">
             {t('common.applyNow')}
           </Button>
+          <AuthMenu />
         </div>
 
         <div className="navbar-end gap-1 lg:hidden">
@@ -109,9 +112,13 @@ const Navbar = () => {
               </li>
             ))}
             <li className="pt-3">
-              <Button to="/admission" onClick={close} className="w-full">
+              <Button to={applyPath} onClick={close} className="w-full">
                 {t('common.applyNow')}
               </Button>
+            </li>
+            <li className="flex items-center justify-between rounded-lg bg-base-200 px-3 py-2">
+              <span className="text-sm font-medium text-base-content/70">{t('auth.account')}</span>
+              <AuthMenu />
             </li>
             <li className="flex flex-col gap-1 pt-3 text-sm text-base-content/60">
               <a href={telHref(contact.phone)} onClick={close} className="flex items-center gap-2">
