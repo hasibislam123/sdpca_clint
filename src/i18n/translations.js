@@ -3,19 +3,19 @@
 
 export const translations = {
   en: {
-    meta: { htmlLang: 'en', documentTitle: 'Shyampur Adarsha Vidyalaya' },
+    meta: { htmlLang: 'en', documentTitle: 'South Dhaka Pre-Cadet School & Noorani Madrasa' },
 
     brand: {
-      name: 'Shyampur Adarsha Vidyalaya',
-      initials: 'SV',
-      tagline: 'Discipline · Knowledge · Character',
+      name: 'South Dhaka Pre-Cadet School & Noorani Madrasa',
+      initials: 'SD',
+      tagline: 'Education is the Light',
     },
 
     school: {
       established: '1992',
       academicYear: '2026',
       blurb:
-        'Shyampur Adarsha Vidyalaya is a renowned secondary school. We combine discipline, ethics and modern teaching to shape our students into capable citizens of character.',
+        'South Dhaka Pre-Cadet School & Noorani Madrasa is a renowned school and madrasa. We combine discipline, ethics and modern teaching to shape our students into capable citizens of character.',
       addressLine1: 'School Road, Shyampur',
       addressLine2: 'Dhobashor, Tejgaon',
       district: 'Dhaka',
@@ -46,10 +46,13 @@ export const translations = {
       openMenu: 'Open menu',
       closeMenu: 'Close menu',
       mobileMenu: 'Mobile navigation',
+      sectionPages: 'Pages',
+      sectionPreferences: 'Preferences',
+      sectionContact: 'Contact',
       logoAria: '{school} — homepage',
     },
 
-    theme: { switchToLight: 'Switch to light mode', switchToDark: 'Switch to dark mode' },
+    theme: { switchToLight: 'Switch to light mode', switchToDark: 'Switch to dark mode', label: 'Theme' },
     lang: { label: 'Language', switchTo: 'Switch to Bangla' },
 
     auth: {
@@ -335,19 +338,19 @@ export const translations = {
   },
 
   bn: {
-    meta: { htmlLang: 'bn', documentTitle: 'শ্যামলপুর আদর্শ বিদ্যালয়' },
+    meta: { htmlLang: 'bn', documentTitle: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা' },
 
     brand: {
-      name: 'শ্যামলপুর আদর্শ বিদ্যালয়',
-      initials: 'শা',
-      tagline: 'শৃঙ্খলা · জ্ঞান · চরিত্র',
+      name: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা',
+      initials: 'সা',
+      tagline: 'শিক্ষাই আলো',
     },
 
     school: {
       established: '1992',
       academicYear: '2026',
       blurb:
-        'শ্যামলপুর আদর্শ বিদ্যালয় একটি স্বনামধন্য মাধ্যমিক পর্যায়ের শিক্ষা প্রতিষ্ঠান। শৃঙ্খলা, নৈতিকতা ও আধুনিক শিক্ষার সমন্বয়ে আমাদের শিক্ষার্থীদের গড়ে তোলা হয় যোগ্য ও আদর্শ নাগরিক হিসেবে।',
+        'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান। শৃঙ্খলা, নৈতিকতা ও আধুনিক শিক্ষার সমন্বয়ে আমাদের শিক্ষার্থীদের গড়ে তোলা হয় যোগ্য ও আদর্শ নাগরিক হিসেবে।',
       addressLine1: 'স্কুল রোড, শ্যামলপুর',
       addressLine2: 'ধোবাশ্বর, তেজগাঁও',
       district: 'ঢাকা',
@@ -378,10 +381,13 @@ export const translations = {
       openMenu: 'মেনু খুলুন',
       closeMenu: 'মেনু বন্ধ করুন',
       mobileMenu: 'মোবাইল নেভিগেশন',
+      sectionPages: 'পাতাসমূহ',
+      sectionPreferences: 'পছন্দ',
+      sectionContact: 'যোগাযোগ',
       logoAria: '{school} — হোম',
     },
 
-    theme: { switchToLight: 'লাইট মোডে যান', switchToDark: 'ডার্ক মোডে যান' },
+    theme: { switchToLight: 'লাইট মোডে যান', switchToDark: 'ডার্ক মোডে যান', label: 'থিম' },
     lang: { label: 'ভাষা', switchTo: 'Switch to English' },
 
     auth: {

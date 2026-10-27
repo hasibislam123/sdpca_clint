@@ -14,7 +14,7 @@ import { authErrorKey } from '../firebase/authErrors'
 
 export default function Login() {
   const { t, tNumber } = useLanguage()
-  const { login, isAuthenticated, isFirebaseConfigured, returnPath } = useAuth()
+  const { login, isAuthenticated, isFirebaseConfigured } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -23,7 +23,7 @@ export default function Login() {
   const [formError, setFormError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
-  const target = safeRedirectPath(location.state?.from ?? returnPath, '/')
+  const target = safeRedirectPath(location.state?.from, '/')
 
   if (isAuthenticated) return <Navigate to={target} replace />
 

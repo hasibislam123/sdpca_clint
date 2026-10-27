@@ -31,22 +31,17 @@ function GoogleMark({ className = 'h-4 w-4' }) {
 
 export default function GoogleButton({ onError }) {
   const { t } = useLanguage()
-  const { loginWithGoogle, isFirebaseConfigured, returnPath } = useAuth()
+  const { loginWithGoogle, isFirebaseConfigured } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
-
-  const target = safeRedirectPath(location.state?.from ?? returnPath, '/')
 
   const handleClick = async () => {
     setBusy(true)
     onError(null)
     try {
-      const signedIn = await loginWithGoogle(target)
-      // A null user means the full-page redirect to Google is in flight, so stay busy and let the
-      // round trip finish; the page resolves the session on return.
-      if (!signedIn) return
-      navigate(target, { replace: true })
+      await loginWithGoogle()
+      navigate(safeRedirectPath(location.state?.from, '/'), { replace: true })
     } catch (error) {
       onError(t(authErrorKey(error)))
       setBusy(false)

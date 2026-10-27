@@ -16,7 +16,7 @@ const emptyValues = { name: '', email: '', password: '', confirm: '' }
 
 export default function Register() {
   const { t, tNumber } = useLanguage()
-  const { register, isAuthenticated, isFirebaseConfigured, returnPath } = useAuth()
+  const { register, isAuthenticated, isFirebaseConfigured } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -25,7 +25,7 @@ export default function Register() {
   const [formError, setFormError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
-  const target = safeRedirectPath(location.state?.from ?? returnPath, '/')
+  const target = safeRedirectPath(location.state?.from, '/')
 
   if (isAuthenticated) return <Navigate to={target} replace />
 

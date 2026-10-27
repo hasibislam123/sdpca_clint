@@ -2,9 +2,10 @@
 // src/i18n/translations.js and is referenced here by key.
 
 export const contact = {
-  phone: '+880 1712-345678',
+  phone: '+880 1716753802',
+  phone1: '+880 1685661828',
   phoneAlt: '+880 2-9887665',
-  email: 'info@shyampur.edu.bd',
+  email: 'arzuemmg@gmail.com',
   mapEmbedUrl: '',
   social: {
     facebook: '',
