@@ -30,6 +30,8 @@ export function validateLogin({ email, password }) {
   return errors
 }
 
+export const PASSWORD_MIN_LENGTH = 8
+
 export function validateRegister({ name, email, password, confirm }) {
   const errors = {}
   const shortName = minLength(name, 3)
@@ -40,7 +42,7 @@ export function validateRegister({ name, email, password, confirm }) {
   else if (!isEmail(email)) errors.email = err('validation.email')
 
   if (!hasValue(password)) errors.password = err('validation.required')
-  else if (password.length < 6) errors.password = err('validation.passwordShort', { n: 6 })
+  else if (password.length < PASSWORD_MIN_LENGTH) errors.password = err('validation.passwordShort', { n: PASSWORD_MIN_LENGTH })
 
   if (!hasValue(confirm)) errors.confirm = err('validation.required')
   else if (confirm !== password) errors.confirm = err('validation.passwordMatch')

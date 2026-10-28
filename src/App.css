@@ -93,3 +93,36 @@
     letter-spacing: -0.01em;
   }
 }
+
+/* An application sheet is saved as a PDF through the browser's own print dialog, which is the one
+   route that keeps Bangla spelling intact on a phone as well as a desktop. Browsers drop background
+   fills when printing unless the user turns them on, so the theme is restated here as ink on paper and
+   the screen furniture — navigation, footer, buttons — steps out of the way. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  html[data-theme] {
+    --color-primary: #1f2937;
+    --color-primary-content: #1f2937;
+    --color-secondary: #0f5c3f;
+    --color-secondary-content: #1f2937;
+    --color-accent: #0f5c3f;
+    --color-accent-content: #1f2937;
+    --color-neutral: #1f2937;
+    --color-neutral-content: #1f2937;
+    --color-base-100: #ffffff;
+    --color-base-200: #ffffff;
+    --color-base-300: #c9d2dd;
+    --color-base-content: #1f2937;
+    --color-info: #1f2937;
+    --color-success: #0f5c3f;
+    --color-warning: #7a4107;
+    --color-error: #991b1b;
+  }
+}

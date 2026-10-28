@@ -1,10 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { LanguageContext } from '../hook/useLanguage'
+import useContent from '../hook/useContent'
 import { translations } from './translations'
 import { toBanglaDigits } from '../util/bn'
 
 const STORAGE_KEY = 'sms.lang'
 const FALLBACK = 'en'
+
+const UNSAFE_KEY = /^(?:__proto__|constructor|prototype)$/
+
+// Saved wording sits on top of the built-in dictionary rather than replacing it: an empty field in
+// the database means "use the shipped wording", so a page can never be blanked by a half-filled
+// translation and clearing a field is how an admin reverts a single string.
+function mergeDictionary(base, patch) {
+  if (!patch) return base
+
+  const out = { ...base }
+  for (const [key, value] of Object.entries(patch)) {
+    if (UNSAFE_KEY.test(key)) continue
+    const existing = out[key]
+
+    if (value && typeof value === 'object') {
+      out[key] = mergeDictionary(existing, value)
+    } else if (typeof value === 'string' && value !== '') {
+      out[key] = value
+    }
+  }
+  return out
+}
 
 function readStoredLanguage() {
   try {
@@ -25,7 +48,18 @@ function interpolate(template, vars) {
 }
 
 export default function LanguageProvider({ children }) {
+  const { overrides } = useContent()
   const [lang, setLangState] = useState(readStoredLanguage)
+
+  const dictionary = useMemo(
+    () => mergeDictionary(translations[lang] ?? translations[FALLBACK], overrides[lang]),
+    [lang, overrides],
+  )
+
+  const fallbackDictionary = useMemo(
+    () => mergeDictionary(translations[FALLBACK], overrides[FALLBACK]),
+    [overrides],
+  )
 
   const setLang = useCallback((next) => {
     const code = next in translations ? next : FALLBACK
@@ -39,20 +73,19 @@ export default function LanguageProvider({ children }) {
 
   const t = useCallback(
     (key, vars) => {
-      const value = resolve(translations[lang] ?? translations[FALLBACK], key)
-      if (typeof value !== 'string') return interpolate(resolve(translations[FALLBACK], key) ?? key, vars)
+      const value = resolve(dictionary, key)
+      if (typeof value !== 'string') return interpolate(resolve(fallbackDictionary, key) ?? key, vars)
       return interpolate(value, vars)
     },
-    [lang],
+    [dictionary, fallbackDictionary],
   )
 
   const tNumber = useCallback((value) => (lang === 'bn' ? toBanglaDigits(value) : String(value)), [lang])
 
   useEffect(() => {
-    const dictionary = translations[lang] ?? translations[FALLBACK]
     document.documentElement.lang = dictionary.meta.htmlLang
     document.title = dictionary.meta.documentTitle
-  }, [lang])
+  }, [dictionary])
 
   const value = useMemo(() => ({ lang, setLang, t, tNumber }), [lang, setLang, t, tNumber])
 

@@ -10,13 +10,13 @@ import useLanguage from '../hook/useLanguage'
 import { validateRegister } from '../util/validators'
 import { localizeNumbers } from '../util/bn'
 import { safeRedirectPath } from '../util/redirect'
-import { authErrorKey } from '../firebase/authErrors'
+import { authErrorKey } from '../api/authErrors'
 
 const emptyValues = { name: '', email: '', password: '', confirm: '' }
 
 export default function Register() {
   const { t, tNumber } = useLanguage()
-  const { register, isAuthenticated, isFirebaseConfigured } = useAuth()
+  const { register, isAuthenticated, apiOnline } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -103,7 +103,7 @@ export default function Register() {
           type="password"
           autoComplete="new-password"
           required
-          hint={t('auth.passwordHint', { n: tNumber(6) })}
+          hint={t('auth.passwordHint', { n: tNumber(8) })}
           value={values.password}
           onChange={handleChange}
           error={message(errors.password)}
@@ -119,7 +119,7 @@ export default function Register() {
           onChange={handleChange}
           error={message(errors.confirm)}
         />
-        <Button type="submit" disabled={submitting || !isFirebaseConfigured}>
+        <Button type="submit" disabled={submitting || !apiOnline}>
           {submitting ? t('auth.creatingAccount') : t('auth.createAccount')}
         </Button>
       </form>

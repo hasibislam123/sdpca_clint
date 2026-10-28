@@ -1,18 +1,32 @@
-import PageSkeleton from '../component/ui/PageSkeleton'
+import NoticeSection from '../component/Content/NoticeSection'
+import PageHeader from '../component/ui/PageHeader'
 import useLanguage from '../hook/useLanguage'
+
+const LATEST = 6
 
 export default function Notices() {
   const { t } = useLanguage()
 
   return (
-    <PageSkeleton
-      title={t('notices.title')}
-      description={t('notices.description')}
-      breadcrumb={[{ label: t('nav.notices') }]}
-      sections={[
-        { title: t('notices.latestTitle'), eyebrow: t('notices.latestEyebrow'), columns: 3, label: t('notices.latestLabel') },
-        { title: t('notices.archiveTitle'), eyebrow: t('notices.archiveEyebrow'), columns: 3, label: t('notices.archiveLabel') },
-      ]}
-    />
+    <>
+      <PageHeader
+        title={t('notices.title')}
+        description={t('notices.description')}
+        breadcrumb={[{ label: t('nav.notices') }]}
+      />
+
+      <NoticeSection
+        eyebrow={t('notices.latestEyebrow')}
+        title={t('notices.latestTitle')}
+        label={t('notices.latestLabel')}
+        limit={LATEST}
+      />
+      <NoticeSection
+        eyebrow={t('notices.archiveEyebrow')}
+        title={t('notices.archiveTitle')}
+        label={t('notices.archiveLabel')}
+        skip={LATEST}
+      />
+    </>
   )
 }

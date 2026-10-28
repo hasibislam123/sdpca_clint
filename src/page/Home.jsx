@@ -1,21 +1,16 @@
 import Button from '../component/ui/Button'
-import ImagePlaceholder from '../component/ui/ImagePlaceholder'
-import SectionPlaceholder from '../component/ui/SectionPlaceholder'
+import ContentImage from '../component/Content/ContentImage'
+import ContentSection from '../component/Content/ContentSection'
+import NoticeSection from '../component/Content/NoticeSection'
 import { Icon } from '../component/ui/Icon'
+import useContent from '../hook/useContent'
 import useLanguage from '../hook/useLanguage'
 import { applyPath } from '../config/admission'
 
-const pendingSections = [
-  { titleKey: 'home.statsTitle', eyebrowKey: 'home.statsEyebrow' },
-  { titleKey: 'home.aboutTitle', eyebrowKey: 'home.aboutEyebrow' },
-  { titleKey: 'home.programsTitle', eyebrowKey: 'home.programsEyebrow' },
-  { titleKey: 'home.whyTitle', eyebrowKey: 'home.whyEyebrow' },
-  { titleKey: 'home.teachersTitle', eyebrowKey: 'home.teachersEyebrow' },
-  { titleKey: 'home.noticesTitle', eyebrowKey: 'home.noticesEyebrow' },
-]
-
 function Hero() {
   const { t, tNumber } = useLanguage()
+  const { imageFor } = useContent()
+  const hero = imageFor('home', 'hero')
 
   return (
     <section className="bg-primary text-primary-content">
@@ -51,7 +46,12 @@ function Hero() {
         </div>
 
         <div className="relative">
-          <ImagePlaceholder label={t('home.heroImage')} ratio="aspect-[4/3]" className="bg-base-100 shadow-xl" />
+          <ContentImage
+            src={hero}
+            label={t('home.heroImage')}
+            ratio="aspect-[4/3]"
+            className="bg-base-100 shadow-xl"
+          />
         </div>
       </div>
     </section>
@@ -82,13 +82,24 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {pendingSections.map((section) => (
-        <SectionPlaceholder
-          key={section.titleKey}
-          title={t(section.titleKey)}
-          eyebrow={t(section.eyebrowKey)}
-        />
-      ))}
+
+      <ContentSection page="home" slot="stats" eyebrow={t('home.statsEyebrow')} title={t('home.statsTitle')} columns={3} />
+      <ContentSection page="home" slot="about" eyebrow={t('home.aboutEyebrow')} title={t('home.aboutTitle')} columns={3} />
+      <ContentSection page="home" slot="programs" eyebrow={t('home.programsEyebrow')} title={t('home.programsTitle')} columns={3} />
+      <ContentSection page="home" slot="why" eyebrow={t('home.whyEyebrow')} title={t('home.whyTitle')} columns={3} />
+
+      <ContentSection
+        page="teachers"
+        slot="faculty"
+        eyebrow={t('home.teachersEyebrow')}
+        title={t('home.teachersTitle')}
+        label={t('teachers.facultyLabel')}
+        columns={4}
+        limit={4}
+      />
+
+      <NoticeSection eyebrow={t('home.noticesEyebrow')} title={t('home.noticesTitle')} limit={3} />
+
       <AdmissionCallToAction />
     </>
   )

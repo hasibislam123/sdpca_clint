@@ -4,7 +4,7 @@ import Button from '../ui/Button'
 import useAuth from '../../hook/useAuth'
 import useLanguage from '../../hook/useLanguage'
 import { safeRedirectPath } from '../../util/redirect'
-import { authErrorKey } from '../../firebase/authErrors'
+import { authErrorKey } from '../../api/authErrors'
 
 function GoogleMark({ className = 'h-4 w-4' }) {
   return (
@@ -31,7 +31,7 @@ function GoogleMark({ className = 'h-4 w-4' }) {
 
 export default function GoogleButton({ onError }) {
   const { t } = useLanguage()
-  const { loginWithGoogle, isFirebaseConfigured } = useAuth()
+  const { loginWithGoogle, googleSignIn } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
@@ -48,6 +48,10 @@ export default function GoogleButton({ onError }) {
     }
   }
 
+  // The API has to say it will accept a Google token before this is offered at all, so a server
+  // without FIREBASE_PROJECT_ID never shows a button that can only fail.
+  if (!googleSignIn) return null
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3 text-xs text-base-content/50">
@@ -55,7 +59,7 @@ export default function GoogleButton({ onError }) {
         {t('auth.or')}
         <span className="h-px flex-1 bg-base-300" />
       </div>
-      <Button type="button" variant="light" onClick={handleClick} disabled={busy || !isFirebaseConfigured} className="gap-2.5">
+      <Button type="button" variant="light" onClick={handleClick} disabled={busy} className="gap-2.5">
         {busy ? <span className="loading loading-spinner loading-sm" /> : <GoogleMark />}
         {busy ? t('auth.googleConnecting') : t('auth.continueWithGoogle')}
       </Button>

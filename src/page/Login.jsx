@@ -10,11 +10,11 @@ import useLanguage from '../hook/useLanguage'
 import { validateLogin } from '../util/validators'
 import { localizeNumbers } from '../util/bn'
 import { safeRedirectPath } from '../util/redirect'
-import { authErrorKey } from '../firebase/authErrors'
+import { authErrorKey } from '../api/authErrors'
 
 export default function Login() {
   const { t, tNumber } = useLanguage()
-  const { login, isAuthenticated, isFirebaseConfigured } = useAuth()
+  const { login, isAuthenticated, apiOnline } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -95,7 +95,7 @@ export default function Login() {
           onChange={handleChange}
           error={message(errors.password)}
         />
-        <Button type="submit" disabled={submitting || !isFirebaseConfigured}>
+        <Button type="submit" disabled={submitting || !apiOnline}>
           {submitting ? t('auth.signingIn') : t('auth.signIn')}
         </Button>
       </form>

@@ -30,6 +30,9 @@ const requiredEnvKeys = {
   appId: 'VITE_FIREBASE_APP_ID',
 }
 
+// Raised by the auth layer itself when .env has no usable Firebase values.
+export const NOT_CONFIGURED_ERROR = 'firebase-not-configured'
+
 export const missingEnvKeys = Object.entries(requiredEnvKeys)
   .filter(([field]) => !isUsable(firebaseConfig[field]))
   .map(([, name]) => name)

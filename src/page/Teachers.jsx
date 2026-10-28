@@ -1,18 +1,32 @@
-import PageSkeleton from '../component/ui/PageSkeleton'
+import TeacherSection from '../component/Content/TeacherSection'
+import PageHeader from '../component/ui/PageHeader'
 import useLanguage from '../hook/useLanguage'
 
 export default function Teachers() {
   const { t } = useLanguage()
 
   return (
-    <PageSkeleton
-      title={t('teachers.title')}
-      description={t('teachers.description')}
-      breadcrumb={[{ label: t('nav.teachers') }]}
-      sections={[
-        { title: t('teachers.facultyTitle'), eyebrow: t('teachers.facultyEyebrow'), columns: 4, label: t('teachers.facultyLabel') },
-        { title: t('teachers.staffTitle'), eyebrow: t('teachers.staffEyebrow'), columns: 3, label: t('teachers.staffLabel') },
-      ]}
-    />
+    <>
+      <PageHeader
+        title={t('teachers.title')}
+        description={t('teachers.description')}
+        breadcrumb={[{ label: t('nav.teachers') }]}
+      />
+
+      <TeacherSection
+        group="faculty"
+        eyebrow={t('teachers.facultyEyebrow')}
+        title={t('teachers.facultyTitle')}
+        label={t('teachers.facultyLabel')}
+        columns={4}
+      />
+      <TeacherSection
+        group="staff"
+        eyebrow={t('teachers.staffEyebrow')}
+        title={t('teachers.staffTitle')}
+        label={t('teachers.staffLabel')}
+        columns={3}
+      />
+    </>
   )
 }

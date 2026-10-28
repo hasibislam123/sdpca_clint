@@ -3,11 +3,10 @@ import Logo from '../ui/Logo'
 import Alert from '../ui/Alert'
 import useAuth from '../../hook/useAuth'
 import useLanguage from '../../hook/useLanguage'
-import { missingEnvKeys } from '../../firebase/firebase.init'
 
 export default function AuthShell({ title, description, children, footer }) {
   const { t } = useLanguage()
-  const { isFirebaseConfigured } = useAuth()
+  const { apiOnline } = useAuth()
 
   return (
     <section className="py-12 sm:py-16">
@@ -20,9 +19,9 @@ export default function AuthShell({ title, description, children, footer }) {
             <h1 className="text-xl font-semibold text-base-content sm:text-2xl">{title}</h1>
             <p className="text-sm leading-relaxed text-base-content/65">{description}</p>
           </div>
-          {!isFirebaseConfigured && (
-            <Alert variant="warning" title={t('auth.setupTitle')}>
-              {t(missingEnvKeys.length ? 'auth.setupMissingKeys' : 'auth.setupBody', { keys: missingEnvKeys.join(', ') })}
+          {apiOnline === false && (
+            <Alert variant="warning" title={t('auth.offlineTitle')}>
+              {t('auth.offlineBody')}
             </Alert>
           )}
           {children}

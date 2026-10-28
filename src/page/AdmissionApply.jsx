@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PageHeader from '../component/ui/PageHeader'
 import Input from '../component/ui/Input'
 import Select from '../component/ui/Select'
@@ -11,6 +12,8 @@ import useLanguage from '../hook/useLanguage'
 import { validateApplication } from '../util/validators'
 import { localizeNumbers } from '../util/bn'
 import { classLevels, genders, guardianRelations } from '../config/admission'
+import { apiMyApplications, apiSubmitApplication } from '../api/admission'
+import { authErrorKey } from '../api/authErrors'
 
 const initialValues = {
   studentName: '',
@@ -48,9 +51,11 @@ function Group({ eyebrow, title, children }) {
 export default function AdmissionApply() {
   const { t, tNumber } = useLanguage()
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
   const [notice, setNotice] = useState(null)
+  const [busy, setBusy] = useState(false)
   const summaryRef = useRef(null)
 
   const message = (failure) => (failure ? t(failure.key, localizeNumbers(tNumber, failure.vars)) : undefined)
@@ -68,7 +73,15 @@ export default function AdmissionApply() {
     })
   }
 
-  const handleSubmit = (event) => {
+  // The server checks the same rules again and answers with the field names it rejected. Their own
+  // wording is English and machine-generated, so the UI names the problem in the current language
+  // instead of showing the API's prose.
+  const serverFieldErrors = (fields) => {
+    if (!fields || typeof fields !== 'object') return {}
+    return Object.fromEntries(Object.keys(fields).map((field) => [field, { key: 'validation.serverField' }]))
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const found = validateApplication(values)
     setErrors(found)
@@ -79,9 +92,30 @@ export default function AdmissionApply() {
       return
     }
 
-    // No application store is wired up yet, so nothing is sent anywhere and nothing is saved.
-    setNotice({ variant: 'warning', title: t('admissionForm.notSavedTitle'), body: t('admissionForm.notSavedBody') })
-    summaryRef.current?.focus()
+    setBusy(true)
+    try {
+      const { application } = await apiSubmitApplication(values)
+      // The saved record is read back by id on the confirmation page, so what a guardian sees there is
+      // what MongoDB holds, not what the browser still has in memory.
+      navigate(`/admission/application/${application.id}`)
+    } catch (error) {
+      setErrors(serverFieldErrors(error.fields))
+      setNotice({ variant: 'error', title: t('admissionForm.failedTitle'), body: t(authErrorKey(error)) })
+
+      // One application per account per session, so a guardian who has already filed and lost their
+      // confirmation link is pointed straight back at the file instead of at a dead end. The id rides
+      // on the notice, so it disappears with it as soon as the form is edited again.
+      if (error.code === 'already_applied') {
+        apiMyApplications().then(
+          (data) => setNotice((previous) => (previous ? { ...previous, existingId: data?.applications?.[0]?.id ?? null } : previous)),
+          () => {},
+        )
+      }
+
+      summaryRef.current?.focus()
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
@@ -100,9 +134,16 @@ export default function AdmissionApply() {
                 {notice.body}
               </Alert>
             )}
+            {notice?.existingId && (
+              <div className="flex justify-end">
+                <Button to={`/admission/application/${notice.existingId}`} variant="light" size="sm">
+                  {t('admissionForm.viewExisting')}
+                </Button>
+              </div>
+            )}
             <p className="flex items-start gap-2 text-sm text-base-content/65">
               <Icon name="shield" className="mt-0.5 h-4 w-4 shrink-0 text-secondary" />
-              {t('admissionForm.applicant', { name: user.displayName?.trim() || user.email })}
+              {t('admissionForm.applicant', { name: user.name?.trim() || user.email })}
             </p>
           </div>
 
@@ -291,7 +332,9 @@ export default function AdmissionApply() {
           </Group>
 
           <div className="flex flex-col gap-3 border-t border-base-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <Button type="submit">{t('admissionForm.submit')}</Button>
+            <Button type="submit" disabled={busy}>
+              {busy ? t('admissionForm.submitting') : t('admissionForm.submit')}
+            </Button>
             <Button to="/admission" variant="ghost">{t('admissionForm.cancel')}</Button>
           </div>
         </div>

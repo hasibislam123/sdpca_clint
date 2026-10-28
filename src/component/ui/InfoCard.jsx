@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom'
 import { Icon } from './Icon'
 import useLanguage from '../../hook/useLanguage'
 
-export default function InfoCard({ icon, title, description, to, href, meta, linkLabel, className = '' }) {
+export default function InfoCard({ icon, title, description, to, href, meta, linkLabel, image, className = '' }) {
   const { t } = useLanguage()
 
   const body = (
     <>
+      {image && <div className="mb-4 overflow-hidden rounded-box border border-base-300">{image}</div>}
       {icon && (
         <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 text-primary">
           <Icon name={icon} className="h-5 w-5" />

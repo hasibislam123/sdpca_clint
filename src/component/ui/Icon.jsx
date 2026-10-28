@@ -25,6 +25,13 @@ const paths = {
   shield: 'M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z',
   sparkle: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z',
   target: 'M12 22a10 10 0 100-20 10 10 0 000 20zm0-4a6 6 0 100-12 6 6 0 000 12zm0-4a2 2 0 100-4 2 2 0 000 4z',
+  plus: 'M12 5v14M5 12h14',
+  edit: 'M4 20h4L20 8l-4-4L4 16v4zM14 6l4 4',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6',
+  upload: 'M12 16V4m0 0L8 8m4-4 4 4M4 20h16',
+  download: 'M12 4v12m0 0l-4-4m4 4 4-4M4 20h16',
+  image: 'M4 5h16v14H4zM4 16l4-4 4 4 3-3 5 5M15 9a1 1 0 100-2 1 1 0 000 2z',
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
 }
 
 export function Icon({ name, className = 'h-5 w-5', strokeWidth = 1.8, label, ...rest }) {

@@ -1,67 +1,119 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-} from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { AuthContext } from '../hook/useAuth'
-import { auth as firebaseAuth, isFirebaseConfigured } from '../firebase/firebase.init'
+import {
+  ApiClientError,
+  apiAuthConfig,
+  apiGoogleSession,
+  apiLogin,
+  apiLogout,
+  apiRegister,
+  apiSession,
+} from '../api/client'
+import { NOT_CONFIGURED_ERROR, auth, isFirebaseConfigured } from '../firebase/firebase.init'
+
+const isOffline = (error) => error instanceof ApiClientError && error.isNetwork
+
+// The account picker is requested every time, so a shared or family Google session cannot silently
+// sign the guardian in as whoever the browser happens to remember.
+const googleProvider = new GoogleAuthProvider()
+googleProvider.setCustomParameters({ prompt: 'select_account' })
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [sessionResolved, setSessionResolved] = useState(!isFirebaseConfigured)
-  const [profileRev, setProfileRev] = useState(0)
+  // Stays true until the API answers, so ProtectedRoute never bounces a signed-in guardian to the
+  // login page while the session cookie is still being checked.
+  const [loading, setLoading] = useState(true)
+  const [apiOnline, setApiOnline] = useState(true)
+  // Firebase on this client decides whether a Google popup can run at all. The API only gets to
+  // veto: an explicit googleSignIn:false hides the button, but an older or unreachable API that
+  // never answers the config request is silence, not a refusal, and must not hide it.
+  const [googleSignIn, setGoogleSignIn] = useState(isFirebaseConfigured)
 
   useEffect(() => {
-    if (!firebaseAuth) return
-    return onAuthStateChanged(firebaseAuth, (next) => {
-      setUser(next)
-      setSessionResolved(true)
-    })
+    let active = true
+
+    apiSession().then(
+      (next) => {
+        if (!active) return
+        setUser(next)
+        setLoading(false)
+      },
+      (error) => {
+        if (!active) return
+        setUser(null)
+        setLoading(false)
+        if (isOffline(error)) setApiOnline(false)
+      },
+    )
+
+    apiAuthConfig().then(
+      (config) => {
+        if (active) setGoogleSignIn(isFirebaseConfigured && Boolean(config?.googleSignIn))
+      },
+      () => {
+        /* nothing heard: keep the value derived from Firebase, since the server never declined */
+      },
+    )
+
+    return () => {
+      active = false
+    }
   }, [])
 
   const login = useCallback(async (email, password) => {
-    if (!firebaseAuth) throw new Error('firebase-not-configured')
-    const credential = await signInWithEmailAndPassword(firebaseAuth, email.trim(), password)
-    return credential.user
-  }, [])
-
-  const register = useCallback(async (email, password, displayName) => {
-    if (!firebaseAuth) throw new Error('firebase-not-configured')
-    const credential = await createUserWithEmailAndPassword(firebaseAuth, email.trim(), password)
-    const name = displayName.trim()
-    if (name) {
-      try {
-        await updateProfile(credential.user, { displayName: name })
-        // updateProfile mutates the Firebase User in place and never re-emits onAuthStateChanged,
-        // so bumping a revision is what makes consumers re-read the new name.
-        setProfileRev((rev) => rev + 1)
-      } catch {
-        // The account exists and is signed in; the missing name is cosmetic, so do not fail registration.
-      }
+    try {
+      const payload = await apiLogin(email, password)
+      setUser(payload.user)
+      setApiOnline(true)
+      return payload.user
+    } catch (error) {
+      if (isOffline(error)) setApiOnline(false)
+      throw error
     }
-    return credential.user
   }, [])
 
-  const loginWithGoogle = useCallback(async () => {
-    if (!firebaseAuth) throw new Error('firebase-not-configured')
-    const result = await signInWithPopup(firebaseAuth, new GoogleAuthProvider())
-    return result.user
+  const register = useCallback(async (email, password, fullName) => {
+    try {
+      const payload = await apiRegister(fullName.trim(), email.trim(), password)
+      setUser(payload.user)
+      setApiOnline(true)
+      return payload.user
+    } catch (error) {
+      if (isOffline(error)) setApiOnline(false)
+      throw error
+    }
   }, [])
+
+  // Firebase only ever runs the Google popup here. The ID token it returns is exchanged for this
+  // site's own session cookie, so the account, the role and every later decision live in MongoDB.
+  const loginWithGoogle = useCallback(async () => {
+    if (!googleSignIn) throw new ApiClientError('google_not_configured', 503)
+    if (!auth) throw new Error(NOT_CONFIGURED_ERROR)
+
+    const outcome = await signInWithPopup(auth, googleProvider)
+    const idToken = await outcome.user.getIdToken()
+
+    try {
+      const payload = await apiGoogleSession(idToken)
+      setUser(payload.user)
+      setApiOnline(true)
+      return payload.user
+    } catch (error) {
+      if (isOffline(error)) setApiOnline(false)
+      throw error
+    }
+  }, [googleSignIn])
 
   const logout = useCallback(async () => {
-    if (!firebaseAuth) return
+    // Clear locally first: if the API is unreachable the guardian still leaves the signed-in state,
+    // and the session cookie expires on its own server-side.
+    setUser(null)
     try {
-      await signOut(firebaseAuth)
+      await apiLogout()
+      setApiOnline(true)
     } catch (error) {
-      // The local session is already cleared when the Google revoke endpoint fails, so still sign out.
-      if (error?.code !== 'auth/network-request-failed') throw error
-      await signOut(firebaseAuth, { persist: false })
-      setUser(null)
+      if (isOffline(error)) setApiOnline(false)
     }
   }, [])
 
@@ -69,18 +121,18 @@ export default function AuthProvider({ children }) {
     () => ({
       user,
       isAuthenticated: Boolean(user),
-      // False until Firebase confirms the persisted session, so guards never redirect too early.
-      loading: !sessionResolved,
-      isFirebaseConfigured,
+      // Read from the role the server sent with the session. Nothing here trusts anything the
+      // browser stores; a refreshed page re-reads it from /api/auth/me.
+      isAdmin: user?.role === 'admin',
+      loading,
+      apiOnline,
+      googleSignIn,
       login,
       register,
       loginWithGoogle,
       logout,
     }),
-    // profileRev is load-bearing: updateProfile mutates the Firebase User in place, so this
-    // bump is the only signal that consumers have a new name to read.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [user, sessionResolved, profileRev, login, logout, register, loginWithGoogle],
+    [user, loading, apiOnline, googleSignIn, login, register, loginWithGoogle, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
