@@ -41,8 +41,8 @@ const Navbar = () => {
   }, [open])
 
   return (
-    <header className="sticky top-0 z-50">
-      <div className="hidden bg-primary text-primary-content lg:block">
+    <header className="sticky top-0 z-50 border-t-2 border-t-gold">
+      <div className="hidden bg-navy text-mist lg:block">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-4 py-2 text-xs sm:px-6">
           <p className="flex items-center gap-2 opacity-90">
             <Icon name="clock" className="h-3.5 w-3.5" />

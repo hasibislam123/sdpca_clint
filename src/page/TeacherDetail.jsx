@@ -12,6 +12,7 @@ import { telHref } from '../config/site'
 import { pickLanguageText, splitSubjects } from '../util/localised'
 
 const GROUP = {
+  principal: { eyebrow: 'teachers.principalEyebrow', photoLabel: 'teachers.principalLabel' },
   faculty: { eyebrow: 'teachers.facultyEyebrow', photoLabel: 'teachers.facultyLabel' },
   staff: { eyebrow: 'teachers.staffEyebrow', photoLabel: 'teachers.staffLabel' },
 }

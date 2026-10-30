@@ -5,29 +5,57 @@
   themes: false;
 }
 
+/* ---------------------------------------------------------------------------
+   Brand palette. Three of the five palette entries are used as raw utilities
+   because they have to stay the same colour in both themes — the navy bands
+   (hero, page headers, navbar strip, footer) and the light-blue text that sits
+   on them must not lift to a lighter shade just because dark mode is on:
+
+     navy  #0B1F3A  bg-navy / text-navy — the permanent dark bands
+     mist  #EAF1FF  bg-mist / text-mist — light-blue background and band text
+     gold  #F5B942  bg-gold / text-gold — small highlights on navy only
+                   (9.4:1 on navy, but 1.8:1 on white, so never body text)
+
+   White and royal blue #1D4ED8 enter through the theme roles below instead:
+   royal is `primary` (buttons, links, focus) and white is `base-100`.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-navy: #0b1f3a;
+  --color-mist: #eaf1ff;
+  --color-gold: #f5b942;
+
+  --font-sans: "Inter", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", "Anek Bangla", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Light: white cards on a light-blue page, navy ink, royal actions, gold accents. */
 @plugin "daisyui/theme" {
   name: "school";
   default: true;
   color-scheme: light;
 
-  --color-primary: #0e2a47;
+  --color-primary: #1d4ed8;
   --color-primary-content: #ffffff;
-  --color-secondary: #0f9d6b;
+  --color-secondary: #0b1f3a;
   --color-secondary-content: #ffffff;
-  --color-accent: #14b8a6;
-  --color-accent-content: #04231f;
-  --color-neutral: #1f2937;
-  --color-neutral-content: #ffffff;
+  --color-accent: #f5b942;
+  --color-accent-content: #0b1f3a;
+  --color-neutral: #0b1f3a;
+  --color-neutral-content: #dbe6f7;
 
   --color-base-100: #ffffff;
-  --color-base-200: #f5f7fa;
-  --color-base-300: #e4e8ef;
-  --color-base-content: #1f2937;
+  --color-base-200: #eaf1ff;
+  --color-base-300: #d5e2f6;
+  --color-base-content: #16283f;
 
-  --color-info: #0e2a47;
-  --color-success: #0f9d6b;
-  --color-warning: #b45309;
-  --color-error: #b91c1c;
+  --color-info: #1d4ed8;
+  --color-info-content: #ffffff;
+  --color-success: #0e7f5c;
+  --color-success-content: #ffffff;
+  --color-warning: #a1560b;
+  --color-warning-content: #ffffff;
+  --color-error: #b3261e;
+  --color-error-content: #ffffff;
 
   --radius-box: 0.75rem;
   --radius-field: 0.5rem;
@@ -35,38 +63,43 @@
   --border: 1px;
 }
 
+/* Dark: deep navy page, lighter navy cards, near-white text, light-blue
+   secondary text, gold kept for the highlights that read best on navy.
+   `primary` and `secondary` lift to their light-blue twins so the same classes
+   that are navy ink on white stay readable on navy — and the bands that must
+   *always* be dark navy (hero, page headers, navbar strip, footer) use the
+   constant `navy`/`mist` palette colours instead. */
 @plugin "daisyui/theme" {
   name: "schooldark";
   color-scheme: dark;
 
-  --color-primary: #2b62a0;
-  --color-primary-content: #f2f7fd;
-  --color-secondary: #17b978;
-  --color-secondary-content: #04231a;
-  --color-accent: #2dd4bf;
-  --color-accent-content: #04231f;
-  --color-neutral: #16283d;
-  --color-neutral-content: #e6edf6;
+  --color-primary: #6c9ce0;
+  --color-primary-content: #08182f;
+  --color-secondary: #8fb6ea;
+  --color-secondary-content: #08182f;
+  --color-accent: #f5b942;
+  --color-accent-content: #0b1f3a;
+  --color-neutral: #071628;
+  --color-neutral-content: #d7e3f5;
 
-  --color-base-100: #0f1f33;
-  --color-base-200: #0a1626;
-  --color-base-300: #21384f;
-  --color-base-content: #e6edf6;
+  --color-base-100: #0b1f3a;
+  --color-base-200: #071628;
+  --color-base-300: #1e3a5c;
+  --color-base-content: #e6eeff;
 
-  --color-info: #4a90d9;
-  --color-success: #17b978;
-  --color-warning: #f0a92c;
-  --color-error: #f26b6b;
+  --color-info: #6c9ce0;
+  --color-info-content: #08182f;
+  --color-success: #2fbd8b;
+  --color-success-content: #08182f;
+  --color-warning: #f5b942;
+  --color-warning-content: #08182f;
+  --color-error: #f2777a;
+  --color-error-content: #08182f;
 
   --radius-box: 0.75rem;
   --radius-field: 0.5rem;
   --radius-selector: 0.5rem;
   --border: 1px;
-}
-
-@theme {
-  --font-sans: "Inter", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Inter", "Anek Bangla", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -92,6 +125,19 @@
     font-weight: 600;
     letter-spacing: -0.01em;
   }
+
+  /* Switching Light/Dark swaps about a dozen custom properties on <html> at once, which without this
+     reads as a hard cut. Only paint properties are listed: transform and opacity are deliberately left
+     alone so the fade can never fight a GSAP tween or a hover lift. Components that already declare a
+     `transition` utility override this from the utilities layer and keep their own timing. */
+  *,
+  ::before,
+  ::after {
+    transition-property: background-color, border-color, color, fill, stroke, outline-color,
+      text-decoration-color, box-shadow;
+    transition-duration: 220ms;
+    transition-timing-function: ease;
+  }
 }
 
 /* An application sheet is saved as a PDF through the browser's own print dialog, which is the one
@@ -108,21 +154,31 @@
   }
 
   html[data-theme] {
-    --color-primary: #1f2937;
-    --color-primary-content: #1f2937;
-    --color-secondary: #0f5c3f;
-    --color-secondary-content: #1f2937;
-    --color-accent: #0f5c3f;
-    --color-accent-content: #1f2937;
-    --color-neutral: #1f2937;
-    --color-neutral-content: #1f2937;
+    /* The navy bands use the constant palette colours rather than a theme role, so they have to be
+       flattened to ink on paper here as well. */
+    --color-navy: #ffffff;
+    --color-mist: #16283f;
+    --color-gold: #7a4107;
+
+    --color-primary: #16283f;
+    --color-primary-content: #16283f;
+    --color-secondary: #16283f;
+    --color-secondary-content: #16283f;
+    --color-accent: #16283f;
+    --color-accent-content: #16283f;
+    --color-neutral: #16283f;
+    --color-neutral-content: #16283f;
     --color-base-100: #ffffff;
     --color-base-200: #ffffff;
     --color-base-300: #c9d2dd;
-    --color-base-content: #1f2937;
-    --color-info: #1f2937;
+    --color-base-content: #16283f;
+    --color-info: #16283f;
+    --color-info-content: #16283f;
     --color-success: #0f5c3f;
+    --color-success-content: #16283f;
     --color-warning: #7a4107;
+    --color-warning-content: #16283f;
     --color-error: #991b1b;
+    --color-error-content: #16283f;
   }
 }

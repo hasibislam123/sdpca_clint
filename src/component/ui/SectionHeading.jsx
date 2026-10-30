@@ -9,6 +9,9 @@ export default function SectionHeading({ eyebrow, title, description, align = 'c
         </span>
       )}
       {title && <h2 className="text-2xl leading-snug text-base-content sm:text-3xl">{title}</h2>}
+      {/* One gold rule per section is the accent the palette asks for; it inherits the container's
+          alignment, so it sits left under a left heading and centred under a centred one. */}
+      {title && <span aria-hidden="true" className="h-1 w-12 rounded-full bg-gold" />}
       {description && <p className="text-sm leading-relaxed text-base-content/70 sm:text-base">{description}</p>}
     </div>
   )

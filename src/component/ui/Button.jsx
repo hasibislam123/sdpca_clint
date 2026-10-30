@@ -6,6 +6,9 @@ const variantClass = {
   outline: 'btn-outline border-primary/30 text-primary hover:bg-primary hover:text-primary-content',
   ghost: 'btn-ghost text-primary hover:bg-primary/10',
   light: 'btn-soft bg-base-100 text-primary shadow-sm hover:bg-base-200',
+  // The navy bands — hero, page headers, footer — stay navy in both themes, so a button sitting on one
+  // needs a light face in dark mode too. `light` follows the theme and would vanish there.
+  onNavy: 'btn-soft bg-mist text-navy shadow-sm hover:bg-white',
 }
 
 const sizeClass = {

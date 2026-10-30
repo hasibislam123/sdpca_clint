@@ -57,7 +57,7 @@ export default function AdminNotices() {
                   </span>
                   <span className="text-xs text-base-content/60">{tNumber(formatNoticeDate(notice.noticeDate, lang))}</span>
                   <span className="flex flex-wrap gap-2">
-                    {notice.pinned && <span className="badge badge-primary badge-sm">{t('notices.pinned')}</span>}
+                    {notice.pinned && <span className="badge badge-accent badge-sm">{t('notices.pinned')}</span>}
                     {!notice.publish && <span className="badge badge-ghost badge-sm">{t('admin.draft')}</span>}
                   </span>
                 </div>

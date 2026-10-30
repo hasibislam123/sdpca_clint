@@ -32,6 +32,8 @@ const paths = {
   download: 'M12 4v12m0 0l-4-4m4 4 4-4M4 20h16',
   image: 'M4 5h16v14H4zM4 16l4-4 4 4 3-3 5 5M15 9a1 1 0 100-2 1 1 0 000 2z',
   grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  pause: 'M9.5 5v14M14.5 5v14',
+  play: 'M7 4.8l12 7.2-12 7.2z',
 }
 
 export function Icon({ name, className = 'h-5 w-5', strokeWidth = 1.8, label, ...rest }) {

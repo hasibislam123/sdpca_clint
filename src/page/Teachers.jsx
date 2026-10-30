@@ -1,3 +1,4 @@
+import PrincipalSection from '../component/Content/PrincipalSection'
 import TeacherSection from '../component/Content/TeacherSection'
 import PageHeader from '../component/ui/PageHeader'
 import useLanguage from '../hook/useLanguage'
@@ -12,6 +13,8 @@ export default function Teachers() {
         description={t('teachers.description')}
         breadcrumb={[{ label: t('nav.teachers') }]}
       />
+
+      <PrincipalSection />
 
       <TeacherSection
         group="faculty"

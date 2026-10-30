@@ -16,8 +16,8 @@ import { mediaUrl } from '../config/api'
 import { pickLanguageText } from '../util/localised'
 import { emptyTeacher, teacherDraft } from '../admin/drafts'
 
-// The groups come from the server's schema; these are the only two the public page has sections for.
-const GROUP_LABEL = { faculty: 'admin.groupFaculty', staff: 'admin.groupStaff' }
+// The groups come from the server's schema; these are the sections the public page renders.
+const GROUP_LABEL = { principal: 'admin.groupPrincipal', faculty: 'admin.groupFaculty', staff: 'admin.groupStaff' }
 
 export default function AdminTeachers() {
   const { t, lang, tNumber } = useLanguage()
@@ -26,7 +26,7 @@ export default function AdminTeachers() {
   const [form, setForm] = useState(null)
 
   const languages = schema.languages ?? ['en', 'bn']
-  const groups = schema.teacherGroups?.length ? schema.teacherGroups : ['faculty', 'staff']
+  const groups = schema.teacherGroups?.length ? schema.teacherGroups : ['principal', 'faculty', 'staff']
 
   const group = groups.includes(params.get('group')) ? params.get('group') : groups[0]
 

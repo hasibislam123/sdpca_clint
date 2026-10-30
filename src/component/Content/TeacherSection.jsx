@@ -12,10 +12,12 @@ const GRID = {
 }
 
 // The Teachers page had only card slots before. A saved teacher takes the section over; until an
-// admin adds one, it renders exactly the cards — or the placeholder — it renders today.
-export default function TeacherSection({ group, eyebrow, title, label, columns = 4 }) {
+// admin adds one, it renders exactly the cards — or the placeholder — it renders today. A home page
+// uses `limit` so the section stays one row long while the full page keeps showing everyone.
+export default function TeacherSection({ group, eyebrow, title, label, columns = 4, limit = 0 }) {
   const { teachersFor } = useContent()
-  const teachers = teachersFor(group)
+  const all = teachersFor(group)
+  const teachers = limit > 0 ? all.slice(0, limit) : all
 
   if (teachers.length === 0) {
     return (
@@ -26,6 +28,7 @@ export default function TeacherSection({ group, eyebrow, title, label, columns =
         title={title}
         label={label}
         columns={columns}
+        limit={limit}
         imageRatio="aspect-[4/3]"
       />
     )

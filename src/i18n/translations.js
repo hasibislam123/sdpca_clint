@@ -3,10 +3,10 @@
 
 export const translations = {
   en: {
-    meta: { htmlLang: 'en', documentTitle: 'South Dhaka Pre-Cadet School & Noorani Madrasa' },
+    meta: { htmlLang: 'en', documentTitle: 'South Dhaka Pre-Cadet School' },
 
     brand: {
-      name: 'South Dhaka Pre-Cadet School & Noorani Madrasa',
+      name: 'South Dhaka Pre-Cadet School',
       initials: 'SD',
       tagline: 'Education is the Light',
     },
@@ -15,7 +15,7 @@ export const translations = {
       established: '1992',
       academicYear: '2026',
       blurb:
-        'South Dhaka Pre-Cadet School & Noorani Madrasa is a renowned school and madrasa. We combine discipline, ethics and modern teaching to shape our students into capable citizens of character.',
+        'South Dhaka Pre-Cadet School is a renowned school. We combine discipline, ethics and modern teaching to shape our students into capable citizens of character.',
       addressLine1: 'School Road, Shyampur',
       addressLine2: 'Dhobashor, Tejgaon',
       district: 'Dhaka',
@@ -241,6 +241,18 @@ export const translations = {
       established: 'Established {year}',
       location: '{district}, {country}',
       heroImage: 'Photo of the main campus goes here',
+      sliderLabel: 'Photographs of the school',
+      slides: {
+        campus: 'The school campus',
+        playground: 'Break time on the grounds',
+        event: 'A cultural programme on the grounds',
+        banner: 'The main gate',
+      },
+      slidePrevious: 'Previous photograph',
+      slideNext: 'Next photograph',
+      slidePause: 'Pause the slideshow',
+      slidePlay: 'Play the slideshow',
+      slideIndicator: 'Photograph {n} of {total}',
       ctaAdmission: 'Apply online',
       ctaAbout: 'About the school',
       statsEyebrow: 'Proud numbers',
@@ -291,6 +303,9 @@ export const translations = {
     teachers: {
       title: 'Teachers and staff',
       description: 'The teaching, administrative and support staff of the school.',
+      principalTitle: 'Office of the Principal',
+      principalEyebrow: 'Principal',
+      principalLabel: 'Principal photograph',
       facultyTitle: 'Our teachers',
       facultyEyebrow: 'Faculty',
       facultyLabel: 'Teacher photograph',
@@ -433,6 +448,7 @@ export const translations = {
       emailLabel: 'Email',
       phoneLabel: 'Phone',
       photoLabel: 'Photograph',
+      groupPrincipal: 'Principal',
       groupFaculty: 'Faculty',
       groupStaff: 'Officers and staff',
       noDesignation: 'No designation',
@@ -522,10 +538,10 @@ export const translations = {
   },
 
   bn: {
-    meta: { htmlLang: 'bn', documentTitle: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা' },
+    meta: { htmlLang: 'bn', documentTitle: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল' },
 
     brand: {
-      name: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা',
+      name: 'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল',
       initials: 'সা',
       tagline: 'শিক্ষাই আলো',
     },
@@ -534,7 +550,7 @@ export const translations = {
       established: '1992',
       academicYear: '2026',
       blurb:
-        'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল ও নূরানী মাদ্রাসা একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান। শৃঙ্খলা, নৈতিকতা ও আধুনিক শিক্ষার সমন্বয়ে আমাদের শিক্ষার্থীদের গড়ে তোলা হয় যোগ্য ও আদর্শ নাগরিক হিসেবে।',
+        'সাউথ ঢাকা প্রি-ক্যাডেট স্কুল একটি স্বনামধন্য শিক্ষা প্রতিষ্ঠান। শৃঙ্খলা, নৈতিকতা ও আধুনিক শিক্ষার সমন্বয়ে আমাদের শিক্ষার্থীদের গড়ে তোলা হয় যোগ্য ও আদর্শ নাগরিক হিসেবে।',
       addressLine1: 'স্কুল রোড, শ্যামলপুর',
       addressLine2: 'ধোবাশ্বর, তেজগাঁও',
       district: 'ঢাকা',
@@ -762,6 +778,18 @@ export const translations = {
       established: 'প্রতিষ্ঠাকাল {year}',
       location: '{district}, {country}',
       heroImage: 'প্রধান ক্যাম্পাসের ছবি এখানে বসবে',
+      sliderLabel: 'বিদ্যালয়ের ছবি',
+      slides: {
+        campus: 'বিদ্যালয় পরিসর',
+        playground: 'মাঠে অবসর',
+        event: 'মাঠে সাংস্কৃতিক অনুষ্ঠান',
+        banner: 'বিদ্যালয়ের প্রধান ফটক',
+      },
+      slidePrevious: 'পূর্ববর্তী ছবি',
+      slideNext: 'পরবর্তী ছবি',
+      slidePause: 'স্লাইডশো থামান',
+      slidePlay: 'স্লাইডশো চালান',
+      slideIndicator: 'ছবি {n} / {total}',
       ctaAdmission: 'অনলাইনে ভর্তি হোন',
       ctaAbout: 'প্রতিষ্ঠান সম্পর্কে জানুন',
       statsEyebrow: 'সংখ্যায় আমাদের গর্ব',
@@ -812,6 +840,9 @@ export const translations = {
     teachers: {
       title: 'শিক্ষক ও কর্মী বৃন্দ',
       description: 'বিদ্যালয়ের শিক্ষকবৃন্দ ও কর্মকর্তা-কর্মচারীবৃন্দের তালিকা।',
+      principalTitle: 'প্রধান শিক্ষকের কার্যালয়',
+      principalEyebrow: 'প্রধান শিক্ষক',
+      principalLabel: 'প্রধান শিক্ষকের ছবি',
       facultyTitle: 'শিক্ষকবৃন্দ',
       facultyEyebrow: 'শিক্ষকমণ্ডলী',
       facultyLabel: 'শিক্ষকের ছবি',
@@ -954,6 +985,7 @@ export const translations = {
       emailLabel: 'ইমেইল',
       phoneLabel: 'ফোন নম্বর',
       photoLabel: 'ছবি',
+      groupPrincipal: 'প্রধান শিক্ষক',
       groupFaculty: 'শিক্ষকমণ্ডলী',
       groupStaff: 'কর্মকর্তা ও কর্মচারী',
       noDesignation: 'পদবি নেই',

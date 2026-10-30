@@ -45,7 +45,7 @@ export default function NoticeSection({ eyebrow, title, description, label, colu
                   {tNumber(formatNoticeDate(notice.noticeDate, lang))}
                 </span>
                 {notice.pinned && (
-                  <span className="badge badge-primary text-xs font-medium">{t('notices.pinned')}</span>
+                  <span className="badge badge-accent text-xs font-medium">{t('notices.pinned')}</span>
                 )}
               </div>
 

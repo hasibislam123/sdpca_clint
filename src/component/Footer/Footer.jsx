@@ -8,7 +8,7 @@ const Footer = () => {
   const { t, tNumber } = useLanguage()
 
   return (
-    <footer className="bg-neutral text-neutral-content">
+    <footer className="border-t-2 border-t-gold bg-neutral text-neutral-content">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-4">
           <Logo size="md" nameClassName="text-neutral-content" />
@@ -39,7 +39,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-2">
               {group.items.map((item) => (
                 <li key={item.key}>
-                  <Link to={item.to} className="text-sm text-neutral-content/65 transition hover:text-secondary">
+                  <Link to={item.to} className="text-sm text-neutral-content/65 transition hover:text-gold">
                     {t(item.key)}
                   </Link>
                 </li>

@@ -19,7 +19,13 @@ import {
 import { authErrorKey } from '../api/authErrors'
 import useContent from '../hook/useContent'
 
-const EMPTY_SCHEMA = { pages: {}, limits: {}, icons: [], languages: ['en', 'bn'], teacherGroups: ['faculty', 'staff'] }
+const EMPTY_SCHEMA = {
+  pages: {},
+  limits: {},
+  icons: [],
+  languages: ['en', 'bn'],
+  teacherGroups: ['principal', 'faculty', 'staff'],
+}
 const EMPTY_DATA = { pages: {}, cards: [], notices: [], media: [], teachers: [] }
 
 const readAsDataUrl = (file) =>
